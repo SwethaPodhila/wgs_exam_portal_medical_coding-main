@@ -1,0 +1,209 @@
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: transparent;
+    background-image: url("https://i.pinimg.com/564x/0e/58/17/0e5817b2f5a8e955103255569de24896.jpg");
+    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(5px);
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+.login-page {
+    min-width: 360px;
+    padding: 0px !important;
+    margin: 25px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    /* height: 399px; */
+}
+
+.avatar {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.form {
+    position: relative;
+    z-index: 1;
+    min-width: 360px;
+    /* margin: 0 auto 100px; */
+    padding: 45px;
+    text-align: center;
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    /* border-radius: 20px; */
+    max-width: 720px;
+}
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="tel"],
+.form input[type="email"] {
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    outline: none;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="tel"],
+.form input[type="email"],
+.form input[type="date"],
+.form select {
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    outline: none;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    max-width: 350px !important;
+}
+
+.form select {
+    /* appearance: none; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23333'%3E%3Cpath d='M10 12L5 7h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 12px);
+    background-position-y: center;
+    cursor: pointer;
+    background-size: 25px;
+}
+
+.form select::-ms-expand {
+    display: none;
+}
+
+.form select option {
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+
+.form button {
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    outline: none;
+    background-color: #2196F3;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 20px;
+    max-width: 300px;
+}
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+    background-color: #1976D2;
+}
+
+.form h2 {
+    color: #333333;
+    font-size: 28px;
+    margin: 0 0 30px;
+}
+
+.form p.message {
+    color: #666666;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.form p.message a {
+    color: #2196F3 !important;
+    text-decoration: none;
+}
+
+.form p.message a:hover {
+    text-decoration: underline;
+}
+
+.footer-class {
+    display: none;
+}
+
+a {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .footer-class {
+        border: solid #ffffff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65;
+        background: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .login-container {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .signup-container {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    p.footer-text {
+        margin: 0px;
+        font-size: 10px;
+    }
+
+    .footer-divider {
+        height: 40px;
+        width: 1px;
+        border: solid 1px #edf2fa;
+    }
+}

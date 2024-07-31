@@ -1,0 +1,655 @@
+
+/* body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: transparent;
+    
+    background-size: cover;
+    backdrop-filter: blur(5px);
+} */
+
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: transparent;
+    background-image: url("https://i.pinimg.com/564x/0e/58/17/0e5817b2f5a8e955103255569de24896.jpg");
+    background-size: cover;
+    /* display: flex; */
+    /* flex-direction: row; */
+    align-items: center;
+    /* justify-content: center; */
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin: 0px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #07074b;
+    /* background: #ffffff; */
+    color: #000000;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    color: #000000;
+}
+
+th {
+    /* background-color: #f2f2f2; */
+}
+
+.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(7, 7, 75);
+    padding: 15px;
+    color: white;
+    height: 70px;
+    padding: 0.2rem 1.8rem;
+}
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.navbar-brand img{
+    width: 100%;
+}
+
+.person-logout img{
+   border-radius: 50%;
+}
+
+.navbar-profile {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-profile .profile-pic {
+    border-radius: 50%;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-profile .username {
+    margin-right: 20px;
+}
+
+.navbar-brand img{
+    border-radius: 50%;
+}
+
+.navbar-brand img{
+    width: 100%;
+}
+
+.navbar-profile .logout-btn {
+    background-color: #555;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.dashboard {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form textarea, form button {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.start-exam-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.person-logo-logout {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the custom dropdown container */
+.person-logout {
+    position: relative;
+}
+
+/* Style for the custom dropdown button */
+.custom-btn {
+    background-color: rgb(7, 7, 75); /* Background color */
+    color: white; /* Text color */
+    padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+    font-size: 1rem; /* Font size */
+    line-height: 1.5; /* Line height */
+    border-radius: 0.25rem; /* Border radius */
+    cursor: pointer; /* Cursor */
+    display: flex; /* Make the button flex container */
+    align-items: center; /* Center align items */
+}
+
+/* Style for the custom dropdown menu */
+.custom-dropdown-menu {
+    position: absolute; /* Position absolute to be relative to the dropdown container */
+    top: 100%; /* Position below the dropdown button */
+    left: 0; /* Align with the left edge of the dropdown button */
+    z-index: 1000; /* Ensure the dropdown is above other elements */
+    display: none; /* Hide the dropdown by default */
+    min-width: 10rem; /* Minimum width of the dropdown */
+    padding: 0.5rem 0; /* Adjust padding as needed */
+    margin: 0.125rem 0 0; /* Adjust margin as needed */
+    font-size: 1rem; /* Font size */
+    color: white; /* Text color */
+    text-align: left; /* Text alignment */
+    background-color: rgb(7, 7, 75); /* Background color */
+   border: none;
+    border-radius: 0.25rem; /* Border radius */
+}
+
+/* Style for the custom dropdown menu items */
+.dropdown-item {
+    display: block; /* Make the menu items block elements */
+    width: 100%; /* Take up full width */
+    clear: both; /* Clear float */
+    font-weight: 400; /* Font weight */
+    color: white; /* Text color */
+    text-align: inherit; /* Inherit text alignment */
+    white-space: nowrap; /* Prevent wrapping */
+    background-color: transparent; /* Transparent background */
+    border: 0; /* No border */
+    padding: 2px;/* Adjust padding as needed */
+    text-decoration: none; /* No text decoration */
+}
+
+
+/* Show the custom dropdown menu when the custom dropdown button is clicked */
+.custom-btn:focus + .custom-dropdown-menu {
+    display: block;
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+    position: absolute; /* Position absolute to be relative to the dropdown container */
+    top: 100%; /* Position below the dropdown button */
+    left: 0; /* Align with the left edge of the dropdown button */
+    z-index: 1000; /* Ensure the dropdown is above other elements */
+    display: none; /* Hide the dropdown by default */
+    min-width: 10rem; /* Minimum width of the dropdown */
+    padding: 0.5rem 0; /* Adjust padding as needed */
+    margin: 0.125rem 0 0; /* Adjust margin as needed */
+    font-size: 1rem; /* Font size */
+    color: white; /* Text color */
+    text-align: left; /* Text alignment */
+    background-color: #fff; /* Background color */
+    border-radius: 0.25rem; /* Border radius */
+}
+
+/* Style for the dropdown menu items */
+.dropdown-item {
+    display: block; /* Make the menu items block elements */
+    width: 100%; /* Take up full width */
+    clear: both; /* Clear float */
+    font-weight: 400; /* Font weight */
+    color: white; /* Text color */
+    text-align: inherit; /* Inherit text alignment */
+    white-space: nowrap; /* Prevent wrapping */
+    background-color: transparent; /* Transparent background */
+    border: 0; /* No border */
+    padding: 0.25rem 1.5rem; /* Adjust padding as needed */
+    text-decoration: none; /* No text decoration */
+}
+
+/* Show the dropdown menu when the dropdown button is clicked */
+.dropdown-toggle:focus + .dropdown-menu {
+    display: block;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin:auto;
+}
+
+.buttons {
+    flex-basis: calc(50% - 10px);
+    margin-top: 30px;
+    width:200px;
+    height:300px;
+    background-color: white;
+}
+
+
+.buttons a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s ease;
+    
+}
+
+.buttons a:hover {
+    transform: translateY(-5px);
+    text-decoration: none;
+}
+
+.buttons img {
+    width:250px;
+    height:250px;
+    margin-bottom: 10px;
+}
+
+.buttons h2 {
+    font-size: 18px;
+    text-align: center;
+    padding:3px;
+}
+
+.btn-primary {
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.divider-btn{
+    background: linear-gradient(to right, #c82333, #f37a5d);
+    width:96%;
+    color:white;
+}
+
+
+*{
+    box-sizing: border-box;
+    /* color: #fff; */
+}
+
+.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(7, 7, 75);
+    padding: 15px;
+    color: white;
+    height: 70px;
+    padding: 0.2rem 1.8rem;
+    width: 100%;
+}
+
+.navbar-logo img {
+    height: 40px;
+}
+.person-logout img{
+   border-radius: 50%;
+   margin-right: 15px;
+}
+
+.navbar-profile {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-profile .profile-pic {
+    border-radius: 50%;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-profile .username {
+    margin-right: 20px;
+}
+
+.navbar-brand img{
+    border-radius: 50%;
+}
+
+.navbar-profile .logout-btn {
+    background-color: #555;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.dashboard {
+    display: flex;
+    /* border: solid red; */
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 89%;
+    margin-top: 25px;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form textarea, form button {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.start-exam-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.person-logo-logout {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the custom dropdown container */
+.person-logout {
+    position: relative;
+}
+
+/* Style for the custom dropdown button */
+.custom-btn {
+    background-color: rgb(7, 7, 75); /* Background color */
+    color: white; /* Text color */
+    padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+    font-size: 1rem; /* Font size */
+    line-height: 1.5; /* Line height */
+    border-radius: 0.25rem; /* Border radius */
+    cursor: pointer; /* Cursor */
+    display: flex; /* Make the button flex container */
+    align-items: center; /* Center align items */
+    border: none;
+    outline: none !important;
+}
+
+/* Style for the custom dropdown menu */
+.custom-dropdown-menu {
+    position: absolute; /* Position absolute to be relative to the dropdown container */
+    top: 100%; /* Position below the dropdown button */
+    left: 0; /* Align with the left edge of the dropdown button */
+    z-index: 1000; /* Ensure the dropdown is above other elements */
+    display: none; /* Hide the dropdown by default */
+    min-width: 10rem; /* Minimum width of the dropdown */
+    padding: 0.5rem 0; /* Adjust padding as needed */
+    margin: 0.125rem 0 0; /* Adjust margin as needed */
+    font-size: 1rem; /* Font size */
+    color: white; /* Text color */
+    text-align: left; /* Text alignment */
+    background-color: rgb(7, 7, 75); /* Background color */
+   border: none;
+    border-radius: 0.25rem; /* Border radius */
+}
+
+/* Style for the custom dropdown menu items */
+.dropdown-item {
+    display: block; /* Make the menu items block elements */
+    width: 100%; /* Take up full width */
+    clear: both; /* Clear float */
+    font-weight: 400; /* Font weight */
+    color: white; /* Text color */
+    text-align: inherit; /* Inherit text alignment */
+    white-space: nowrap; /* Prevent wrapping */
+    background-color: transparent; /* Transparent background */
+    border: 0; /* No border */
+    padding: 2px;/* Adjust padding as needed */
+    text-decoration: none; /* No text decoration */
+}
+
+
+/* Show the custom dropdown menu when the custom dropdown button is clicked */
+.custom-btn:focus + .custom-dropdown-menu {
+    display: block;
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+    position: absolute; /* Position absolute to be relative to the dropdown container */
+    top: 100%; /* Position below the dropdown button */
+    left: 0; /* Align with the left edge of the dropdown button */
+    z-index: 1000; /* Ensure the dropdown is above other elements */
+    display: none; /* Hide the dropdown by default */
+    min-width: 10rem; /* Minimum width of the dropdown */
+    padding: 0.5rem 0; /* Adjust padding as needed */
+    margin: 0.125rem 0 0; /* Adjust margin as needed */
+    font-size: 1rem; /* Font size */
+    color: white; /* Text color */
+    text-align: left; /* Text alignment */
+    background-color: #fff; /* Background color */
+    border-radius: 0.25rem; /* Border radius */
+}
+
+/* Style for the dropdown menu items */
+.dropdown-item {
+    display: block; /* Make the menu items block elements */
+    width: 100%; /* Take up full width */
+    clear: both; /* Clear float */
+    font-weight: 400; /* Font weight */
+    color: white; /* Text color */
+    text-align: inherit; /* Inherit text alignment */
+    white-space: nowrap; /* Prevent wrapping */
+    background-color: transparent; /* Transparent background */
+    border: 0; /* No border */
+    padding: 0.25rem 1.5rem; /* Adjust padding as needed */
+    text-decoration: none; /* No text decoration */
+}
+
+/* Show the dropdown menu when the dropdown button is clicked */
+.dropdown-toggle:focus + .dropdown-menu {
+    display: block;
+}
+
+.main-content {
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+    margin:auto;
+}
+
+.buttons a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s ease;
+    /* border: solid; */
+    background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 15px;
+    padding: 15px;
+    /* margin: 15px; */
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.buttons a:hover {
+    transform: translateY(-5px);
+    text-decoration: none;
+}
+
+.buttons img {
+    width: 200px;
+    height: 160px;
+    margin-bottom: 7px;
+}
+
+.buttons h2 {
+    font-size: 18px;
+    text-align: center;
+    /* padding:3px; */
+    margin-bottom: 0px;
+}
+
+.btn-primary {
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.divider-btn{
+    background: linear-gradient(to right, #07074b, #60b3db);
+    width:96%;
+    color:white;
+    /* border: solid blue; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.custom-button{
+    margin-top:10px;
+    margin-bottom:10px;
+}  
+
+
+.custom-dropdown.mr-3 {
+    /* border: solid; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+button.logout-button {
+    border: none;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    outline: none !important;
+    cursor: pointer;
+    border-left: solid #5b5b5b 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+button.see-answers-button {
+    color: #000000;
+}
+h1{
+    color:#ffffff !important
+}
+
+.table_container {
+    margin: 25px;
+    padding: 20px;
+    background: #ffffff;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-body {
+    height: 70vh;
+    overflow: auto;
+}
+
+h3 {
+    font-size: 20px !important;
+    margin-top: 15px !important;
+}
+
+.options-container {
+    border: solid transparent;
+    display: flex;
+    flex-direction: row;
+}

@@ -1,0 +1,233 @@
+.not-visited {
+    background-color: #ccc;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+#flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.homeBtn {
+    margin-right: 10px;
+}
+
+.homeBtn a {
+    text-decoration: none;
+}
+
+.homeBtn button {
+    background-color: transparent;
+    color: white;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: medium;
+}
+
+.homeBtn button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-button {
+    border: none;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    outline: none !important;
+    cursor: pointer;
+    border-left: solid #5b5b5b 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navbar-brand img{
+    width: 100%;
+}
+
+/* Gray */
+.not-answered {
+    background-color: #f00;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+/* Red */
+.answered {
+    background-color: #00ae00;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    color: #ffffff;
+    font-weight: 600;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+/* Green */
+.marked {
+    background-color: #a300a3;
+    border-radius: 50%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Blue */
+.answered-marked {
+    background-color: #ff0;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+div#header {
+    height: 65px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 25px;
+    padding-right: 25px;
+    background: #000000;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.navbar-brand img{
+    width: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+button.question-button {
+    border: none;
+    margin: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-height: 50px;
+    max-width: 50px;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+div#questions-container {
+    display: flex;
+    flex-direction: row;
+}
+
+div#question-buttons {
+    width: 325px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 65px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height:0px;
+    overflow: auto;
+    margin-bottom: 65px;
+}
+
+div#questions {
+    position: fixed;
+    top: 65px;
+    bottom: 0px;
+    left: 155px;
+    right: 325px;
+    overflow: auto
+}
+
+/* Yellow */
+button.next-button {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    height: 35px;
+    width: 125px;
+    border: none;
+    background: black;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+button.mark-for-review {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    height: 35px;
+    width: 125px;
+    border: none;
+    background: black;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+
+    div#question-buttons {
+        width: 100%;
+        position: fixed;
+        right: 0;
+        top: 65px;
+        left: 0px;
+        height: 70px;
+        overflow: auto;
+        flex-direction: row;
+        background: #ffffff !important;
+        flex-wrap: nowrap;
+    }
+
+    button.question-button {
+        border: none;
+        margin: 10px;
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        max-height: 50px;
+        max-width: 50px;
+        min-height: 50px;
+        min-width: 50px;
+    }
+
+    div#questions {
+        width: 88%;
+        position: fixed;
+        top: 150px;
+        bottom: 0px;
+        left: 25px;
+        right: 325px;
+    }
+
+    div#result-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.options-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}

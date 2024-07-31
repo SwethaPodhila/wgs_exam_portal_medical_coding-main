@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Questions</title>
+</head>
+<body>
+    <h1>Questionsssssss</h1>
+    <% questions.forEach(question => { %>
+        <div>
+            <h2>Question: <%= question.question_text %></h2>
+            <ul>
+                <!-- Display options -->
+                <% Object.keys(question.options).forEach(option => { %>
+                    <li>Option <%= option %>: <%= question.options[option] %></li>
+                <% }); %>
+            </ul>
+            <p>Correct Answer: <%= question.correct_answer %></p>
+            <p>Marks: <%= question.marks %></p>
+        </div>
+    <% }); %>
+</body>
+</html>

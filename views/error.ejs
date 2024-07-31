@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Error</title>
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+		<script>
+			// Function to determine and redirect to the correct login page
+			function redirectToLoginPage() {
+				let redirectUrl = '';
+				if (window.location.pathname.startsWith('/users/student')) {
+					redirectUrl = '/users/student/login';
+				} else if (window.location.pathname.startsWith('/users/teacher')) {
+					redirectUrl = '/users/teacher/login';
+				} else if (window.location.pathname.startsWith('/admin')) {
+					redirectUrl = '/users/admin/login';
+				} else {
+					redirectUrl = '/';
+				}
+				// Redirect after a delay (e.g., 6 seconds)
+				setTimeout(() => {
+					window.location.href = redirectUrl;
+				}, 6000);
+			}
+
+			// Execute the redirection function when the page loads
+			window.onload = redirectToLoginPage;
+		</script>
+		
+	</head>
+	<body>
+		<h1>Access Denied: <%= message %></h1>
+		<p>Error <%= error.status %></p>
+		<p>You will be redirected to the login page shortly.</p>
+	</body>
+</html>

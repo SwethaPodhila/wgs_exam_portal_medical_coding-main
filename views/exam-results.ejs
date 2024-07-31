@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Results</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/exam-results.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .custom-modal-dialog {
+            max-width: 80%; /* Adjust the width as needed */
+        }
+        .dropdown-item {
+            color: white;
+        }
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: #dc3545;
+            background-color: transparent;
+            padding: 2px 20px 2px 2px;
+        }
+        /* Style for the HOME button */
+        .custom-button.btn {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+        /* Icon inside the button */
+        .custom-button.btn svg {
+            margin-right: 8px;
+        }
+        /* Hover state */
+        .custom-button.btn:hover {
+            background-color: #0056b3; /* Darker shade of primary color */
+            color: white;
+        }
+        /* Focus state */
+        .custom-button.btn:focus {
+            background-color: #0056b3; /* Darker shade of primary color */
+            color: white;
+            outline: none;
+        }
+        .incorrect-answer {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav class="custom-navbar navbar-light header-container">
+        <!-- Company Logo -->
+        <a class="navbar-brand" href="/student/dashboard">
+            <img src="/images/logo.png" width="100%" height="50" class="d-inline-block align-top" alt="">
+        </a>
+
+        <!-- Person Logo and Logout Dropdown -->
+        <div class="person-logout d-flex">
+            <!-- Custom Dropdown -->
+            <div class="custom-dropdown mr-3">
+                <button class="custom-btn " type="button" id="dropdownMenuButton" aria-haspopup="true"
+                    aria-expanded="false">
+                    <img src="/images/student-logo.jpg" width="50" height="50" alt="Person Logo">
+                    <%= user_name %>
+                </button>
+    
+                <button class="logout-button" id="logout-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 16 16">
+                        <g color="#000000" fill="#ffffff" font-family="sans-serif" font-weight="400"
+                            white-space="normal">
+                            <path
+                                d="M1 7.92a6.94 6.94 0 0 0 .324 2.201A7.004 7.004 0 0 0 8 15a7.004 7.004 0 0 0 6.676-4.879 6.978 6.978 0 0 0-2.662-7.818l-1.145 1.64a4.96 4.96 0 0 1 1.9 5.575A4.99 4.99 0 0 1 8 13a4.99 4.99 0 0 1-4.77-3.482 4.96 4.96 0 0 1 1.9-5.575l-1.144-1.64A6.985 6.985 0 0 0 1 7.92z"
+                                overflow="visible"
+                                style="line-height:normal;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;text-orientation:mixed;shape-padding:0;isolation:auto;mix-blend-mode:normal" />
+                            <path d="M7 1v7h2V.75z" overflow="visible"
+                                style="line-height:normal;font-variant-ligatures:none;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;shape-padding:0;isolation:auto;mix-blend-mode:normal;marker:none" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="table_container">
+        <h3 style="text-align: center;">Exam Results</h3>
+        <% if (examResults.length > 0) { %>
+            <div style="overflow-x: auto; min-width: 100%; display: inline-block;">
+                <table style="width: 100%; table-layout: fixed;">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Number of Questions</th>
+                            <th>Questions Answered</th>
+                            <th>Correct Answers</th>
+                            <th>Wrong Answers</th>
+                            <th>Results</th>
+                            <th>Percentage Scored</th>
+                            <th>Created At</th>
+                            <th>See Answers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% examResults.forEach((result, index) => { %>
+                            <tr>
+                                
+                                <td><%= result.Course ? result.Course.course_name : 'N/A' %></td>
+                                <td><%= result.number_of_questions %></td>
+                                <td><%= result.questions_answered %></td>
+                                <td><%= result.correct_answers %></td>
+                                <td><%= result.wrong_answers %></td>
+                                <td>
+                                    <%= result.result %>
+                                </td>
+                                <td><%= result.percentage_scored %></td>
+                                <td><%= result.created_at %></td>
+                                <td style="display: flex; flex-direction: row; justify-content: center; border: none; align-items: center;">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter-<%= index %>">Show</button>
+                                    <div class="modal fade modal-container-fade" id="exampleModalCenter-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle-<%= index %>" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered custom-modal-dialog" role="document">
+                                            <div class="modal-content div-modal-container">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle-<%= index %>">Answers</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body result-container" id="result-container-<%= index %>">
+                                                    <script>
+                                                        document.addEventListener("DOMContentLoaded", function() {
+                                                            var resultContainer = document.getElementById("result-container-<%= index %>");
+                                                            var htmlString = "<%= result?.results %>";
+                                                            var tempElement = document.createElement('div');
+                                                            tempElement.innerHTML = htmlString;
+                                                            var decodedHtml = tempElement.textContent || tempElement.innerText || "";
+                                                            resultContainer.innerHTML = decodedHtml;
+                                                            var radioButtons = resultContainer.querySelectorAll('input[type="radio"]');
+                                                            radioButtons.forEach(function(radioButton) {
+                                                                radioButton.disabled = true;
+                                                                if (radioButton.dataset.selected === "true") {
+                                                                    radioButton.checked = true;
+                                                                    if (!radioButton.parentNode.querySelector('.check-icon')) {
+                                                                        radioButton.parentNode.classList.add('incorrect-answer');
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <p>No exam results found.</p>
+        <% } %>
+    </div>
+    <script>
+        document.getElementById("logout-button").addEventListener("click", function () {
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/users/student/login';
+                } else {
+                    console.error('Logout failed');
+                }
+            }).catch(error => {
+                console.error('Logout failed', error);
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-V8HU0VZyR9ZHjAk6c1Da8dEJ6JpWgBiPZOlChSpmR8pgaAfae6UJ8SRaZaQLTwM1" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

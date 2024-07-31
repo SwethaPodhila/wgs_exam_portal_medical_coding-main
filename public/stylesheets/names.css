@@ -1,0 +1,15 @@
+.submit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:150px;
+}
+
+@media screen and (max-width: 460px) {
+    .submit-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+}
+

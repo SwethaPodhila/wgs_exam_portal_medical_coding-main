@@ -1,0 +1,115 @@
+<!-- paper.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper</title>
+    <link rel="stylesheet" href="/stylesheets/exam.css" />
+</head>
+<body>
+    <% if (questions.length > 0) { %>
+        <div id="questions-container">
+            <% questions.forEach((question, index) => { %>
+                <div class="question" id="question<%= index + 1 %>" style="display: none;">
+                    <h3>Question <%= index + 1 %>:</h3>
+                    <p><%= question.question_text %></p>
+                    <div class='options-container'>
+                        <input type="radio" name="q<%= index + 1 %>" data-selected="false" value="<%= question.option1 %>">A. <%= question.option1 %><br>
+                    </div>
+                    <div class='options-container'>
+                        <input type="radio" name="q<%= index + 1 %>" data-selected="false" value="<%= question.option2 %>">B. <%= question.option2 %><br>
+                    </div>
+                    <div class='options-container'>
+                        <input type="radio" name="q<%= index + 1 %>" data-selected="false" value="<%= question.option3 %>">C. <%= question.option3 %><br>
+                    </div>
+                    <div class='options-container'>
+                        <input type="radio" name="q<%= index + 1 %>" data-selected="false" value="<%= question.option4 %>">D. <%= question.option4 %><br>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <div id="question-buttons"></div> 
+        <button type="button" class="next-button" id="next-button">Next</button>
+        <button class="next-button" id="next-button2" style="display: none;">Next</button>
+        <button type="button" class="mark-for-review" id="mark-for-review">Mark for Review</button>
+    <% } else { %>
+        <p>No questions available.</p>
+    <% } %>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let question_number = 1;
+            const examResult = {};
+
+            function showQuestion(number) {
+                question_number = number;
+                var questions = document.getElementsByClassName('question');
+                for (var i = 0; i < questions.length; i++) {
+                    questions[i].style.display = 'none';
+                }
+                document.getElementById('question' + number).style.display = 'block';
+            }
+
+            document.getElementById('next-button').addEventListener('click', function () {
+                showNextQuestion();
+            });
+
+            document.getElementById('next-button2').addEventListener('click', function () {
+                showNextQuestion();
+            });
+
+            function showNextQuestion() {
+                var questions = document.getElementsByClassName('question');
+                var totalQuestions = questions.length;
+                if (question_number === totalQuestions) {
+                    finishExam();
+                    return;
+                }
+                question_number += 1;
+                if (question_number === totalQuestions) {
+                    document.getElementById("next-button2").textContent = "Finish";
+                }
+                showQuestion(question_number);
+            }
+
+            function finishExam() {
+                console.log("Exam finished");
+
+                var blob = new Blob([JSON.stringify(examResult)], { type: "application/json" });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'exam-result.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            var options = document.querySelectorAll('input[type=radio]');
+            options.forEach((option, index) => {
+                option.addEventListener('change', function () {
+                    examResult[question_number] = this.value; 
+                });
+            });
+
+            document.getElementById("mark-for-review").addEventListener("click", function () {
+                console.log("Question marked for review:", question_number);
+            });
+
+            showQuestion(1);
+
+            var questionButtonsContainer = document.getElementById('question-buttons');
+            for (var i = 1; i <= questions.length; i++) {
+                var button = document.createElement('button');
+                button.textContent = i;
+                button.classList.add('question-button');
+                button.onclick = function () {
+                    showQuestion(parseInt(this.textContent));
+                };
+                questionButtonsContainer.appendChild(button);
+            }
+        });
+    </script>
+</body>
+</html>

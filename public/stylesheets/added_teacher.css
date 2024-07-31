@@ -1,0 +1,183 @@
+/* added.css */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.custom-navbar {
+    background-color: #007bff; /* Bootstrap's primary color */
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.header-container {
+    margin-bottom: 20px;
+}
+
+.question_container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.question_heading_container {
+    margin-bottom: 20px;
+}
+
+.exam-group {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.exam-group h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.question-item {
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.wide-button {
+    width: 100%; 
+    max-width: 99%; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    text-align: left; 
+}
+
+.wide-button i {
+    float: right; 
+}
+
+.question-item:hover {
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.question-item p {
+    margin-bottom: 10px;
+}
+
+.question-item strong {
+    font-weight: bold;
+    color: #007bff; /* Matching Bootstrap's primary color for emphasis */
+}
+
+button.logout-button {
+    border: none;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    outline: none !important;
+    cursor: pointer;
+    border-left: solid #5b5b5b 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.person-logo-logout {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the custom dropdown container */
+.person-logout {
+    position: relative;
+}
+
+.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(7, 7, 75);
+    padding: 15px;
+    color: white;
+    height: 70px;
+    padding: 0.2rem 1.8rem;
+  /*  position: absolute;  */
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.person-logout img{
+   border-radius: 50%;
+   margin-right: 15px;
+}
+
+.navbar-profile {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-profile .profile-pic {
+    border-radius: 50%;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-profile .username {
+    margin-right: 20px;
+}
+
+.navbar-brand img{
+    width: 100%;
+}
+
+.navbar-profile .logout-btn {
+    background-color: #555;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
+.teacher-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: whitesmoke;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+.teacher-btn i {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.teacher-btn.active i {
+    transform: rotate(180deg);
+}
+
+.teacher-questions {
+    margin-top: 10px;
+    display: none;
+}
