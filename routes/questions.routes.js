@@ -21,4 +21,6 @@ router.delete('/questions/:id', authenticateUser, Question.deleteQuestion);
 
 router.get('/exam-questions', authenticateUser, Question.getAllQuestionsByCriteria);
 
+
+
 module.exports = router;
