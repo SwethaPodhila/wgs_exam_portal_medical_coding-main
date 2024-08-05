@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Questions</title>
-    <link rel="stylesheet" href="/stylesheets/added_teacher.css">
+    <link rel="stylesheet" href="/stylesheets/added.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 </head>
-
 <body>
     <nav class="custom-navbar navbar-light header-container">
         <!-- Company Logo -->
-        <a class="navbar-brand" href="/admin/dashboard">
+        <a class="navbar-brand" href="/teacher/dashboard">
             <img src="/images/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
         </a>
 
@@ -27,11 +21,8 @@
             <div class="custom-dropdown mr-3">
                 <button class="logout-button" id="logout-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 16 16">
-                        <g color="#000000" fill="#ffffff" font-family="sans-serif" font-weight="400"
-                            white-space="normal">
-                            <path
-                                d="M1 7.92a6.94 6.94 0 0 0 .324 2.201A7.004 7.004 0 0 0 8 15a7.004 7.004 0 0 0 6.676-4.879 6.978 6.978 0 0 0-2.662-7.818l-1.145 1.64a4.96 4.96 0 0 1 1.9 5.575A4.99 4.99 0 0 1 8 13a4.99 4.99 0 0 1-4.77-3.482 4.96 4.96 0 0 1 1.9-5.575l-1.144-1.64A6.985 6.985 0 0 0 1 7.92z"
-                                overflow="visible" />
+                        <g color="#000000" fill="#ffffff" font-family="sans-serif" font-weight="400" white-space="normal">
+                            <path d="M1 7.92a6.94 6.94 0 0 0 .324 2.201A7.004 7.004 0 0 0 8 15a7.004 7.004 0 0 0 6.676-4.879 6.978 6.978 0 0 0-2.662-7.818l-1.145 1.64a4.96 4.96 0 0 1 1.9 5.575A4.99 4.99 0 0 1 8 13a4.99 4.99 0 0 1-4.77-3.482 4.96 4.96 0 0 1 1.9-5.575l-1.144-1.64A6.985 6.985 0 0 0 1 7.92z" overflow="visible" />
                             <path d="M7 1v7h2V.75z" overflow="visible" />
                         </g>
                     </svg>
@@ -68,58 +59,46 @@
                 const questionsList = $('#questions-list');
                 questionsList.empty(); // Clear existing content
 
-                if (Array.isArray(questions) && questions.length > 0) {
-                    // Verify the format of questions
-                    console.log('Questions:', questions);
+                if (questions.length > 0) {
+                    // Group questions by teacher_id
+                    const questionsByTeacher = questions.reduce((acc, question) => {
+                        const teacherId = question.teacher_id;
+                        if (!acc[teacherId]) {
+                            acc[teacherId] = [];
+                        }
+                        acc[teacherId].push(question);
+                        return acc;
+                    }, {});
 
                     // Render each teacher's questions
-                    questions.forEach(teacher => {
-                        const teacherName = teacher.teacher_name || 'Unknown';
-                        const teacherId = `teacher-${teacherName.replace(/\s+/g, '-')}`;
+                    for (const [teacherId, questions] of Object.entries(questionsByTeacher)) {
+                        // Display teacher ID
+                        const teacherIdHtml = `<h4>Teacher ID: ${teacherId}</h4>`;
+                        questionsList.append(teacherIdHtml);
 
-                        // Count number of questions
-                        const numQuestions = teacher.questions.length;
-
-                        // Teacher button and collapsible section
-                        const teacherHtml = `
-                <button class="teacher-btn" data-target="#${teacherId}">
-                    ${teacherName} - ${numQuestions} questions
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div id="${teacherId}" class="teacher-questions" style="display: none;">
-                    ${teacher.questions.map(question => `
-                        <div class="question-item">
-                            <p>${question.question_text?.replace(/\n/g, '<br>') || ''}</p>
-                            <p><strong>Options:</strong><br>
-                                ${question.option1 || ''}<br>
-                                ${question.option2 || ''}<br>
-                                ${question.option3 || ''}<br>
-                                ${question.option4 || ''}
-                            </p>
-                            <p><strong>Correct Answer:</strong> ${question.correct_answer || ''}</p>
-                            <p><strong>Marks:</strong> ${question.marks || ''}</p>
-                            <p><strong>Explanation:</strong> ${question.explanation_text?.replace(/\n/g, '<br>') || ''}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-                        questionsList.append(teacherHtml);
-                    });
-
-                    // Add click event to toggle visibility
-                    $('.teacher-btn').click(function () {
-                        const target = $(this).data('target');
-                        $(target).toggle();
-
-                        // Toggle the icon
-                        $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
-                    });
+                        // Render questions for the current teacher
+                        questions.forEach(question => {
+                            const questionHtml = `
+                                <div class="question-item">
+                                    <p>${question.question_text.replace(/\n/g, '<br>')}</p>
+                                    <p><strong>Options:</strong><br>
+                                        ${question.option1}<br>
+                                        ${question.option2}<br>
+                                        ${question.option3}<br>
+                                        ${question.option4}
+                                    </p>
+                                    <p><strong>Correct Answer:</strong> ${question.correct_answer}</p>
+                                    <p><strong>Marks:</strong> ${question.marks}</p>
+                                    <p><strong>Explanation:</strong> ${question.explanation_text.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            `;
+                            questionsList.append(questionHtml);
+                        });
+                    }
                 } else {
                     questionsList.append('<p>No questions available.</p>');
                 }
             }
-
-            
 
             // Fetch and render all questions on page load
             fetchAllQuestions();
@@ -132,7 +111,7 @@
                     .then(response => {
                         if (response.ok) {
                             // Redirect to the login page
-                            window.location.href = '/users/admin/login';
+                            window.location.href = '/users/teacher/login';
                         } else {
                             alert('Failed to log out');
                             location.reload();
@@ -147,5 +126,4 @@
         });
     </script>
 </body>
-
 </html>

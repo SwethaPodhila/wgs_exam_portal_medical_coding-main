@@ -1,7 +1,6 @@
 const {Sequelize, DataTypes} = require('sequelize');
 const sequelize = require('../config/db.config');
 const Exam = require('./exam.model');
-const User =require("./user.model");
 
 const Question = sequelize.define('Question', {
 	question_id: {
@@ -67,7 +66,6 @@ const Question = sequelize.define('Question', {
 	underscored: true
 });
 
-Question.belongsTo(User, { as: 'Teacher', foreignKey: 'teacher_id' });
 Question.belongsTo(Exam, { foreignKey: 'exam_id', as: 'Exam' });
 
 module.exports = Question;

@@ -13,10 +13,9 @@
         <div class="form">
             <h2><%= header %></h2>
             <p style="text-align: center;color: red;"><%= typeof message !== 'undefined' ? message : '' %></p>
-            <form action="<%= page_type === 'sign_up' ? '/users/sign-up' : '/users/login' %>" method="post">
+            <form id="signupForm" action="<%= page_type === 'sign_up' ? '/users/sign-up' : '/users/login' %>" method="post">
                 <% if(page_type === 'sign_up') { %>
                     <% if(role === 'student') { %>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" name="first_name" placeholder="First Name" required="">
@@ -47,10 +46,10 @@
                                 <input type="password" name="password" placeholder="Password" required="" minlength="8"
                                     title="Password should be at least 8 characters long.">
                             </div>
-                                <div class="col-md-6">
-                                    <input type="password" name="confirm password" placeholder="Confirm Password" required="" minlength="8"
+                            <div class="col-md-6">
+                                <input type="password" name="confirm_password" placeholder="Confirm Password" required="" minlength="8"
                                     title="Password should be at least 8 characters long.">
-                                </div>
+                            </div>
                         </div>
                     <% } else if(role === 'teacher' || role === 'admin') { %>
                         <div class="row">
@@ -120,6 +119,23 @@
             <p class="footer-text">Sign-Up</p>
         </a>
     </div>
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+            const role = '<%= role %>';
+            const pageType = '<%= page_type %>';
+            
+            if (pageType === 'sign_up' && role === 'student') {
+                document.getElementById('signupForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the form from submitting immediately
+                    alert('Please wait for admin approval');
+                    setTimeout(function() {
+                        window.location.href = '/users/' + role + '/login'; // Redirect after alert
+                    }, 1000); // Delay of 1 second
+                });
+            }
+        }); 
+    </script>
+    
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

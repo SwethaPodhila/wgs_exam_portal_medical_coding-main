@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/stylesheets/exam.css" />
+    <style>
+
+
+    </style>
 </head>
 
 <body>
@@ -43,6 +47,9 @@
     <div id="questions-container">
         <div id="result-container">
         </div>
+
+        <div class="examButtons" id="examButtons" style="display:none"></div>
+
         <div id="questions">
             <div class="sysInstText1" style="height: 93%; width: 97%; overflow: auto; padding-left: 10px;"
                 id="sysInstText">
@@ -172,25 +179,40 @@
         let question_number = 1;
         const examResult = {};
         const userAnswers = [];
+        let currentExamId = null; // To keep track of the current exam ID
 
-        function showQuestion(number) {
-            question_number = number;
-            var questions = document.getElementsByClassName('question');
-            for (var i = 0; i < questions.length; i++) {
+
+        function showQuestion(questionIndex, examId) {
+            question_number = questionIndex;
+            const questions = document.getElementsByClassName('question');
+            for (let i = 0; i < questions.length; i++) {
                 questions[i].style.display = 'none';
             }
-            document.getElementById('question' + number).style.display = 'block';
 
-            var button = document.querySelector('.question-button:nth-child(' + number + ')');
-            if (button.classList.contains('answered')) {
-                button.classList.remove('not-visited', 'not-answered', 'marked');
-                button.classList.add('answered');
-            } else if (button.classList.contains('marked')) {
-                button.classList.remove('not-visited', 'not-answered', 'answered');
-                button.classList.add('marked');
+            // Construct the question ID using both examId and questionIndex
+            const questionId = 'question' + examId + '_' + questionIndex;
+            const questionElement = document.getElementById(questionId);
+
+            if (questionElement) {
+                questionElement.style.display = 'block';
             } else {
-                button.classList.remove('not-visited', 'answered', 'marked');
-                button.classList.add('not-answered');
+                console.error(`Question ${questionId} not found.`);
+            }
+
+            const button = document.querySelector(`.question-button[data-exam-id="${examId}"][data-question-index="${questionIndex}"]`);
+            if (button) {
+                if (button.classList.contains('answered')) {
+                    button.classList.remove('not-visited', 'not-answered', 'marked');
+                    button.classList.add('answered');
+                } else if (button.classList.contains('marked')) {
+                    button.classList.remove('not-visited', 'not-answered', 'answered');
+                    button.classList.add('marked');
+                } else {
+                    button.classList.remove('not-visited', 'answered', 'marked');
+                    button.classList.add('not-answered');
+                }
+            } else {
+                console.error('Button for question ' + questionIndex + ' not found.');
             }
         }
 
@@ -198,9 +220,11 @@
             document.getElementById("sysInstText").style.display = "none";
             document.getElementById("mark-for-review").style.display = "block";
             document.getElementById("question-buttons").style.display = "flex";
+            document.getElementById("examButtons").style.display = "block";
             document.getElementById("next-button").style.display = "none";
             document.getElementById("next-button2").style.display = "block";
             document.getElementById("questions").style.right = "325px";
+            document.getElementById("questions").style.top = "170px";
             const questions = document.getElementsByClassName('question');
             questions[0].style.display = 'none';
             document.getElementById('question' + 1).style.display = 'block';
@@ -216,153 +240,83 @@
                 button.classList.remove('not-visited', 'answered', 'marked');
                 button.classList.add('not-answered');
             }
-        })
+        });
 
-        // Event listener for the Next button
+        // Assume examId is defined globally or obtained from somewhere in your code
+        var examId; // Declare examId but do not initialize it
+
+        // Function to set the exam ID (call this function with the appropriate exam ID)
+        function setExamId(id) {
+            examId = id;
+        }
+
+
         document.getElementById("next-button2").addEventListener("click", function () {
-            var questions = document.getElementsByClassName('question'); // Get all elements with class 'question'
-            var totalQuestions = questions.length;
+            const questions = document.getElementsByClassName('question'); // Get all elements with class 'question'
+            const totalQuestions = questions.length;
 
-            console.log("Current question number before increment:", question_number); // Log the question number before increment
-            if (question_number === 100) {
-                document.getElementById("next-button2").textContent = "Finish";
+            // Check if the current question number is the last question in the current exam
+            if (document.getElementById(`question${currentExamId}_${question_number + 1}`) === null) {
+                const nextExamId = findNextExamId(currentExamId); // Find the next exam ID
+                if (nextExamId) {
+                    currentExamId = nextExamId; // Update current exam ID
+                    question_number = 1; // Reset question number for the new exam
+                    showQuestion(question_number, currentExamId); // Show the first question of the new exam
+                    this.textContent = "Next"; // Reset button text to "Next"
+                } else {
+                    // No more exams available, handle finish logic
+                    this.textContent = "Finish"; // Change button text to "Finish"
+                    return; // Exit the function
+                }
+                return; // Exit the function
+            } else {
+                // Increment the question number
+                question_number += 1;
             }
 
-            // Increment the question number
-            question_number += 1;
+            // Show the current question based on question_number
+            showQuestion(question_number, currentExamId);
 
-            console.log("Current question number after increment:", question_number); // Log the question number after increment
+            // Update button classes
+            updateButtonClasses(currentExamId, question_number);
 
-            // If the button text is "Finish", handle the action 
-            if (this.textContent.trim() === "Finish") {
-                console.log("Finish button clicked on question number:", question_number); // Log when the Finish button is clicked
+            // Change the text of the next button to "Finish" if on the last question of the last exam
+            if (nextExamId === null && document.getElementById(`question${currentExamId}_${question_number + 1}`) === null) {
+                this.textContent = "Finish"; // Change button text to "Finish"
+            }
+        });
 
-                document.getElementById("question-buttons").style.display = "none";
-                document.getElementById("questions").style.display = "none";
-                document.getElementById("mark-for-review").style.display = "none";
-                document.getElementById("next-button2").style.display = "none";
-                document.getElementById("timer").style.display = "none";
-
-                // Show the flex container with the logout and home buttons
-                document.getElementById("flex-container").style.display = "flex";
-                document.getElementById("logout-button").style.display = "block";
-                document.getElementById("homeBtn").style.display = "flex";
-
-                let correctAnswers = 0;
-
-                for (let question in examResult) {
-                    if (examResult[question] === true) {
-                        correctAnswers++;
-                    }
+        // Event listener for confirmation when clicking "Finish"
+        document.getElementById("next-button2").addEventListener("click", function () {
+            if (this.textContent === "Finish") {
+                // Show alert before submitting
+                if (confirm("Do you want to submit the exam?")) {
+                    showResults(); // Call to show results if confirmed
                 }
-                let wrongAnswers = totalQuestions - correctAnswers;
-                let correctAnswerPercentage = (correctAnswers / totalQuestions) * 100;
-                let result = correctAnswerPercentage >= 70 ? 'Pass' : 'Fail';
+            }
+        });
 
-                var parentElement = document.getElementById("questions");
-                var childElements = parentElement.children;
-                var resultsHTML = [];
 
-                for (var i = 0; i < childElements.length; i++) {
-                    if (childElements[i].id !== "sysInstText") {
-                        childElements[i].style.display = "block";
-                        var checkIcons = childElements[i].getElementsByClassName("check-icon");
-                        for (var j = 0; j < checkIcons.length; j++) {
-                            checkIcons[j].style.display = "inline";
-                        }
-                        var explanation = childElements[i].getElementsByClassName("explanation")[0];
-                        if (explanation) {
-                            explanation.style.display = "block";
-                        }
-                        resultsHTML.push(childElements[i].outerHTML); // Store the HTML of each element
-                    }
+        // Function to find the next exam ID
+        function findNextExamId(currentExamId) {
+            const examButtons = document.querySelectorAll('.question-button'); // Get all exam buttons
+            let foundCurrent = false;
+
+            for (const button of examButtons) {
+                if (button.dataset.examId === currentExamId) {
+                    foundCurrent = true; // Found the current exam
+                } else if (foundCurrent) {
+                    return button.dataset.examId; // Return the next exam ID
                 }
+            }
 
-                const examResultData = {
-                    result: result,
-                    number_of_questions: totalQuestions,
-                    questions_answered: Object.keys(examResult).length,
-                    correct_answers: correctAnswers,
-                    wrong_answers: wrongAnswers,
-                    percentage_scored: correctAnswerPercentage.toFixed(2),
-                    exam_id: "<%=exam_id%>",
-                    course_id: "<%=course_id%>",
-                    // paper_id: "<%=paper_id%>",
-                    results: resultsHTML?.join(" ")?.replace(/\s+/g, " ") // Join the HTML strings into one string
-                };
+            return null; // No more exams found
+        }
 
-                fetch('/result/exam-results', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(examResultData)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to submit exam result');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Exam result submitted successfully:', data);
-                    })
-                    .catch(error => {
-                        console.error('Error submitting exam result:', error.message);
-                    });
-
-                document.getElementById('result-container').innerHTML = `
-               <table style="width: 100%; border-collapse: collapse;">
-            <tr style="background-color: #f2f2f2;">
-                <th style="border: 1px solid #ddd; padding: 8px;">No. of Questions</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${totalQuestions}</td>
-            </tr>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px;">Questions Answered</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${Object.keys(examResult).length}</td>
-            </tr>
-            <tr style="background-color: #f2f2f2;">
-                <th style="border: 1px solid #ddd; padding: 8px;">Correct Answers</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${correctAnswers}</td>
-            </tr>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px;">Wrong Answers</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${wrongAnswers}</td>
-            </tr>
-            <tr style="background-color: #f2f2f2;">
-                <th style="border: 1px solid #ddd; padding: 8px;">Scored Percentage %</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${correctAnswerPercentage.toFixed(2)}%</td>
-            </tr>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px;">Result</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">${result}</td>
-            </tr>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px;">Show Answers</th>
-                <td style="border: 1px solid #ddd; padding: 8px;">
-                    <button id="show-answers-button">
-                        show
-                    </button>
-                </td>
-            </tr>
-        </table>
-    `;
-
-            } else {
-                // If the current question number is 100, change the button text to "Finish"
-                if (question_number === 100) {
-                    this.textContent = "Finish";
-                    console.log(question_number);
-                }
-
-                console.log("Navigating to question number:", question_number); // Log the question number when navigating to a new question
-
-                for (var i = 0; i < questions.length; i++) {
-                    questions[i].style.display = 'none';
-                }
-                document.getElementById('question' + question_number).style.display = 'block';
-
-                var button = document.querySelector('.question-button:nth-child(' + question_number + ')');
+        // Function to update button classes
+        function updateButtonClasses(examId, questionIndex) {
+            const button = document.querySelector(`.question-button[data-exam-id="${examId}"][data-question-index="${questionIndex}"]`);
+            if (button) {
                 if (button.classList.contains('answered')) {
                     button.classList.remove('not-visited', 'not-answered', 'marked');
                     button.classList.add('answered');
@@ -374,29 +328,83 @@
                     button.classList.add('not-answered');
                 }
             }
+        }
 
-            document.getElementById("show-answers-button")?.addEventListener("click", function () {
-                // Handle show answers button action
-                document.getElementById('result-container').style.display = "none";
-                document.getElementById("questions").style.display = "block";
-                var parentElement = document.getElementById("questions");
-                var childElements = parentElement.children;
+        // Function to show results
+        function showResults() {
+            const totalQuestions = Object.keys(examResult).length;
+            document.getElementById("examButtons").style.display = "none";
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
 
-                for (var i = 0; i < childElements.length; i++) {
-                    if (childElements[i].id !== "sysInstText") {
-                        childElements[i].style.display = "block";
-                        var checkIcons = childElements[i].getElementsByClassName("check-icon");
-                        for (var j = 0; j < checkIcons.length; j++) {
-                            checkIcons[j].style.display = "inline";
-                        }
-                        var explanation = childElements[i].getElementsByClassName("explanation")[0];
-                        if (explanation) {
-                            explanation.style.display = "block";
-                        }
-                    }
+            for (let question in examResult) {
+                if (examResult[question] === true) {
+                    correctAnswers++;
+                } else {
+                    wrongAnswers++;
+                }
+            }
+
+            const correctAnswerPercentage = (correctAnswers / totalQuestions) * 100;
+            const result = correctAnswerPercentage >= 70 ? 'Pass' : 'Fail';
+
+            // Hide all other elements
+            document.getElementById('sysInstText').style.display = 'none';
+            document.getElementById("mark-for-review").style.display = "none";
+            document.getElementById("question-buttons").style.display = "none";
+            document.getElementById("examButtons").style.display = "none";
+            document.getElementById("next-button").style.display = "none";
+            document.getElementById("next-button2").style.display = "none";
+            document.getElementById("questions").style.display = "none";
+
+            document.getElementById('result-container').innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background-color: #f2f2f2;">
+                <th style="border: 1px solid #ddd; padding: 8px;">No. of Questions</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">${totalQuestions}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Correct Answers</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">${correctAnswers}</td>
+            </tr>
+            <tr style="background-color: #f2f2f2;">
+                <th style="border: 1px solid #ddd; padding: 8px;">Wrong Answers</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">${wrongAnswers}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Scored Percentage %</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">${correctAnswerPercentage.toFixed(2)}%</td>
+            </tr>
+            <tr style="background-color: #f2f2f2;">
+                <th style="border: 1px solid #ddd; padding: 8px;">Result</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">${result}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Show Answers</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    <button id="show-answers-button">Show</button>
+                </td>
+            </tr>
+        </table>
+    `;
+
+            // Event listener for the Show Answers button
+            document.getElementById("show-answers-button").addEventListener("click", function () {
+                // Implement your logic to show answers
+                const questions = document.getElementsByClassName('question');
+                for (let i = 0; i < questions.length; i++) {
+                    questions[i].style.display = 'none'; // Hide all questions
+                }
+
+                for (let questionId in examResult) {
+                    const answerElement = document.getElementById(questionId); // Get the answer element by ID
+                    answerElement.style.display = 'block'; // Show the answer element
                 }
             });
-        });
+
+            // Show the result container
+            document.getElementById('result-container').style.display = 'block';
+        }
 
         function answerQuestion(number) {
             console.log(number, option)
@@ -407,99 +415,161 @@
         }
 
         window.onload = function () {
-
             fetch(`/question/exam-questions`)
                 .then(response => response.json())
                 .then(data => {
-                    populateQuestions(data);
-                    populateQuestionButtons(Object.keys(data).length); // Assuming data is grouped by exam_id
+                    const groupedData = groupQuestionsByExam(data);
+                    populateQuestions(groupedData);
+                    populateQuestionButtons(groupedData);
+                    populateExamButtons(groupedData);
                 })
                 .catch(error => console.error('Error:', error));
 
-
-            var options = document.querySelectorAll('input[type=radio]');
-            options.forEach((option, index) => {
-                option.addEventListener('change', function () {
-                    answerQuestion(Math.floor(index / 4) + 1);
-                });
-            });
-
             document.getElementById("question-buttons").style.display = "none";
+            document.getElementById("examButtons").style.display = "none";
             document.getElementById("mark-for-review").style.display = "none";
             document.getElementById("questions").style.right = "0px";
         };
 
-        function populateQuestions(data) {
-            var questionsContainer = document.getElementById('questions');
-            data.forEach((item, index) => {
-                var questionDiv = document.createElement('div');
-                questionDiv.id = 'question' + (index + 1);
-                questionDiv.classList.add('question');
-                questionDiv.style.display = 'none';
-                questionDiv.innerHTML = `
-                    <h3 id="Question ${index + 1}"}>Question ${index + 1}:<br> ${item.question_text.replace(/\n/g, '<br>')}</h3>
-                    <div class='options-container'>
-                        <input type="radio" name="q${index + 1}" data-selected="false"  value="${item.option1}">A. ${item.option1}
-                        ${item.option1 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
-                    </div>
-                    <div class='options-container'>
-                        <input type="radio" name="q${index + 1}" data-selected="false"  value="${item.option2}">B. ${item.option2}
-                        ${item.option2 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
-                    </div>
-                    <div class='options-container'>
-                        <input type="radio" name="q${index + 1}" data-selected="false"  value="${item.option3}">C. ${item.option3}
-                        ${item.option3 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
-                    </div>
-                    <div class='options-container'>
-                        <input type="radio" name="q${index + 1}" data-selected="false"  value="${item.option4}">D. ${item.option4}
-                        ${item.option4 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
-                    </div>
-                    <div class='options-container'>
-                      <span class="explanation" style="display: none;"><h3>Explanation</h3>${item.explanation_text}</span>
-                    </div>
-                `;
+        function groupQuestionsByExam(data) {
+            return data.reduce((acc, question) => {
+                const examId = question.exam_id;
+                if (!acc[examId]) {
+                    acc[examId] = [];
+                }
+                acc[examId].push(question);
+                return acc;
+            }, {});
+        }
 
-                questionsContainer.appendChild(questionDiv);
-                var radios = questionDiv.querySelectorAll('input[type="radio"]');
-                radios.forEach(radio => {
-                    radio.addEventListener('change', function () {
+        function populateQuestions(groupedData) {
+            const questionsContainer = document.getElementById('questions');
+            for (const examId in groupedData) {
+                const examQuestions = groupedData[examId];
+                examQuestions.forEach((item, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.id = 'question' + examId + '_' + (index + 1);
+                    questionDiv.classList.add('question');
+                    questionDiv.style.display = 'none';
+                    questionDiv.innerHTML = `
+                        <h3>Exam ${examId}: Question ${index + 1}:<br>${item.question_text.replace(/\n/g, '<br>')}</h3>
+                        <div class='options-container'>
+                            <input type="radio" name="q${item.question_id}" data-selected="false" value="${item.option1}">A. ${item.option1}
+                            ${item.option1 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
+                        </div>
+                        <div class='options-container'>
+                            <input type="radio" name="q${item.question_id}" data-selected="false" value="${item.option2}">B. ${item.option2}
+                            ${item.option2 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
+                        </div>
+                        <div class='options-container'>
+                            <input type="radio" name="q${item.question_id}" data-selected="false" value="${item.option3}">C. ${item.option3}
+                            ${item.option3 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
+                        </div>
+                        <div class='options-container'>
+                            <input type="radio" name="q${item.question_id}" data-selected="false" value="${item.option4}">D. ${item.option4}
+                            ${item.option4 === item.correct_answer ? "<span class='check-icon' style='display: none;color:green'>✔️</span>" : ""}<br>
+                        </div>
+                        <div class='options-container'>
+                          <span class="explanation" style="display: none;"><h3>Explanation</h3>${item.explanation_text}</span>
+                        </div>
+                    `;
+                    questionsContainer.appendChild(questionDiv);
 
-                        var questionId = this.parentNode.parentNode.id;
-                        var otherRadios = document.querySelectorAll(`#${questionId} input[type="radio"]`);
-                        otherRadios.forEach(otherRadio => {
-                            otherRadio.dataset.selected = "false";
+                    const radios = questionDiv.querySelectorAll('input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.addEventListener('change', function () {
+                            const questionId = this.parentNode.parentNode.id;
+                            const otherRadios = document.querySelectorAll(`#${questionId} input[type="radio"]`);
+                            otherRadios.forEach(otherRadio => {
+                                otherRadio.dataset.selected = "false";
+                            });
+                            this.dataset.selected = "true";
+                            examResult[item?.question_id] = this.value === item?.correct_answer;
+                            const button = document.querySelector(`.question-button[data-exam-id="${examId}"][data-question-index="${index + 1}"]`);
+                            if (button) {
+                                button.classList.remove('not-visited', 'not-answered', 'marked');
+                                button.classList.add('answered');
+                            }
                         });
-                        this.dataset.selected = "true";
-                        examResult[item?.question_id] = this.value === item?.correct_answer;
-                        var button = document.querySelector('.question-button:nth-child(' + (index + 1) + ')');
-                        button.classList.remove('not-visited', 'not-answered', 'marked');
-                        button.classList.add('answered');
                     });
                 });
-            });
+            }
         }
 
         document.getElementById("mark-for-review").addEventListener("click", function () {
-            console.log(question_number);
             var button = document.querySelector('.question-button:nth-child(' + (question_number) + ')');
-            console.log(button);
             button.classList.remove('not-visited', 'not-answered', 'answered');
             button.classList.add('marked');
         });
 
-        function populateQuestionButtons(numQuestions) {
-            var questionButtons = document.getElementById('question-buttons');
-            for (var i = 1; i <= numQuestions; i++) {
-                var button = document.createElement('button');
-                button.textContent = i;
-                button.classList.add('question-button');
-                button.onclick = function () {
+        function populateQuestionButtons(groupedData) {
+            const questionButtonsContainer = document.getElementById('question-buttons');
 
-                    showQuestion(parseInt(this.textContent));
-                };
-                questionButtons.appendChild(button);
+            for (const examId in groupedData) {
+                const examQuestions = groupedData[examId];
+
+                // Create and append the h3 tag
+                const examHeader = document.createElement('h3');
+                examHeader.textContent = `Exam Id: ${examId}`;
+                examHeader.id = `examHeader_${examId}`;
+                questionButtonsContainer.appendChild(examHeader);
+
+                // Create and append a line break
+                const lineBreak = document.createElement('br');
+                questionButtonsContainer.appendChild(lineBreak);
+
+                // Create and append the buttons
+                examQuestions.forEach((question, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = index + 1;
+                    button.classList.add('question-button');
+                    button.dataset.examId = examId;
+                    button.dataset.questionIndex = index + 1;
+                    button.onclick = function () {
+                        currentExamId = examId; // Set the current exam ID
+                        question_number = parseInt(this.dataset.questionIndex); // Set the current question number
+                        showQuestion(question_number, currentExamId);
+                        // Update the button text based on the current question
+                        const nextButton = document.getElementById("next-button2");
+                        const nextExamId = findNextExamId(currentExamId);
+                        if (nextExamId === null && document.getElementById(`question${currentExamId}_${question_number + 1}`) === null) {
+                            nextButton.textContent = "Finish"; // Change button text to "Finish"
+                        } else {
+                            nextButton.textContent = "Next"; // Change button text to "Next"
+                        }
+                    };
+                    questionButtonsContainer.appendChild(button);
+                });
+
+                // Create and append another line break after the buttons for better separation
+                const buttonLineBreak = document.createElement('br');
+                questionButtonsContainer.appendChild(buttonLineBreak);
             }
         }
+
+        function populateExamButtons(groupedData) {
+            const examButtonsContainer = document.getElementById('examButtons');
+            for (const examId in groupedData) {
+                const examButton = document.createElement('button');
+                examButton.textContent = `Exam Id: ${examId}`;
+                examButton.classList.add('exam-button');
+                examButton.dataset.examId = examId;
+                examButton.onclick = function () {
+                    scrollToExamHeader(examId);
+                };
+                examButtonsContainer.appendChild(examButton);
+            }
+        }
+
+
+        function scrollToExamHeader(examId) {
+            const examHeader = document.getElementById(`examHeader_${examId}`);
+            if (examHeader) {
+                examHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+
 
         var countDownDate = new Date().getTime() + 4 * 60 * 60 * 1000;
         var timerInterval = setInterval(function () {
@@ -516,9 +586,9 @@
         }, 1000);
         // Confirmation message when leaving the page
         window.addEventListener('beforeunload', function (e) {
-          //   Cancel the event
-           e.preventDefault();
-           //  Chrome requires returnValue to be set
+            //   Cancel the event
+            e.preventDefault();
+            //  Chrome requires returnValue to be set
             e.returnValue = '';
         });
         document.getElementById('logout-button').addEventListener('click', function () {

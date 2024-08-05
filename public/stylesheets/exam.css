@@ -136,24 +136,36 @@ div#question-buttons {
     position: fixed;
     right: 0;
     bottom: 0;
-    top: 65px;
+    top: 172px;
     flex-wrap: wrap;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
-    min-height:0px;
+    min-height: 0px;
     overflow: auto;
     margin-bottom: 65px;
 }
 
+div#question-buttons h3 {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+
+
 div#questions {
     position: fixed;
-    top: 65px;
+    top: 68px;
     bottom: 0px;
     left: 155px;
     right: 325px;
     overflow: auto
 }
+
+
 
 /* Yellow */
 button.next-button {
@@ -231,3 +243,25 @@ button.mark-for-review {
     align-items: center;
     justify-content: flex-start;
 }
+
+.exam-button { 
+    border: none;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 6px 8px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 6px;
+    
+}
+
+.examButtons{
+    margin: 30px;
+    margin-top: 2px;
+    border: 1px solid black;
+}
+
+

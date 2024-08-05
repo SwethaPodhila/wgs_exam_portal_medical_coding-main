@@ -119,45 +119,19 @@ exports.getAllQuestions = async (req, res) => {
 exports.getAllQuestionsByTeacher = async (req, res) => {
     try {
         const questions = await Question.findAll({
-            include: [
-                {
-                    model: Exam,
-                    as: 'Exam',
-                    attributes: ['exam_name']
-                },
-                {
-                    model: User,
-                    as: 'Teacher',
-                    attributes: ['username']
-                }
-            ],
-            order: [['teacher_id', 'ASC'], ['question_id', 'ASC']]
+            include: [{
+                model: Exam,
+                as: 'Exam', // Include exam details if needed
+                attributes: ['exam_name']
+            }],
+            order: [['teacher_id', 'ASC'], ['question_id', 'ASC']] // Optional: Order by teacher_id and question_id
         });
 
         if (!questions || questions.length === 0) {
             return res.status(404).json({ message: 'No questions found.' });
         }
 
-        // Group questions by teacher
-        const questionsByTeacher = {};
-
-        questions.forEach(question => {
-            const teacherName = question.Teacher ? question.Teacher.username : 'Unknown';
-
-            if (!questionsByTeacher[teacherName]) {
-                questionsByTeacher[teacherName] = [];
-            }
-
-            questionsByTeacher[teacherName].push(question);
-        });
-
-        // Transform data into the desired structure
-        const response = Object.keys(questionsByTeacher).map(teacherName => ({
-            teacher_name: teacherName,
-            questions: questionsByTeacher[teacherName]
-        }));
-
-        res.json(response);
+        res.json(questions);
     } catch (err) {
         console.error('Error fetching questions:', err);
         res.status(500).json({ message: 'Failed to fetch questions.' });
@@ -491,7 +465,7 @@ const shuffleArray = (array) => {
     }
 };
 
-// First version of the function (for course_id === 1)
+
 const getAllQuestionsByCriteriaVersion1 = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -532,7 +506,10 @@ const getAllQuestionsByCriteriaVersion1 = async (req, res) => {
             let selectedQuestions = questions.slice(0, limit);
 
             // Add selected questions to the result array and mark them as used
-            selectedQuestions.forEach(question => usedQuestionIds.add(question.question_id));
+            selectedQuestions.forEach(question => {
+                usedQuestionIds.add(question.question_id);
+                question.dataValues.exam_id = exam.exam_id; // Include exam_id in the response
+            });
             allQuestions = allQuestions.concat(selectedQuestions);
         }
 
@@ -573,6 +550,9 @@ const getAllQuestionsByCriteriaVersion2 = async (req, res) => {
                 where: { exam_id: exam.exam_id },
                 order: Sequelize.literal('RAND()'),
                 limit: questionsPerExam
+            });
+            questions.forEach(question => {
+                question.dataValues.exam_id = exam.exam_id; // Include exam_id in the response
             });
             allQuestions = allQuestions.concat(questions);
         }
