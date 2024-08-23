@@ -15,7 +15,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
-    "mysql2": "^3.9.7",
+    "mysql2": "^3.11.0",
     "sequelize": "^6.37.3",
     "nodemailer": "^6.9.13",
     "smtp-server": "^3.13.3"
