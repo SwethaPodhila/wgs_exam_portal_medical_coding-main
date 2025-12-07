@@ -17,7 +17,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^3.9.7",
     "sequelize": "^6.37.3",
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^7.0.11",
     "smtp-server": "^3.13.3"
 
   }
